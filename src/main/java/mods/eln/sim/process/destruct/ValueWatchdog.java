@@ -10,12 +10,14 @@ public abstract class ValueWatchdog implements IProcess {
     double perOverflowStrenght = 1;
     double min;
     double max;
+    double overflowTolerance;
 
     double timeoutReset = 2;
 
     double timeout = 0;
     boolean boot = true;
     boolean joker = true;
+    boolean overflowfailing = false;
 
     double rand = Utils.rand(0.5, 1.5);
 
@@ -27,7 +29,8 @@ public abstract class ValueWatchdog implements IProcess {
         }
         double value = getValue();
         double overflow = Math.max(value - max, min - value);
-        if (overflow > 0) {
+        double overflowTolerated = Math.max(overflow - overflowTolerance, 0);
+        if (overflowTolerated > 0) {
             if (joker) {
                 joker = false;
                 overflow = 0;
@@ -36,7 +39,7 @@ public abstract class ValueWatchdog implements IProcess {
             joker = true;
         }
 
-        timeout -= time * overflow * rand;
+        timeout -= time * overflowTolerated * rand;
         if (timeout > timeoutReset) {
             timeout = timeoutReset;
         }
@@ -46,6 +49,16 @@ public abstract class ValueWatchdog implements IProcess {
                 destructable.describe());
             if (!Eln.debugExplosions)
                 destructable.destructImpl();
+        }
+        if(overflow > 0) {
+            System.out.println("Failure tick");
+            destructable.failureTick();
+            overflowfailing = true;
+        } else {
+            if(overflowfailing) {
+                destructable.failureCancel();
+                overflowfailing = false;
+            }
         }
     }
 

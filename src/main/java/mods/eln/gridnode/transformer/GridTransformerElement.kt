@@ -16,6 +16,7 @@ import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
+import mods.eln.sim.process.destruct.WorldExplosionTransformatorFailure
 import mods.eln.sim.process.heater.ElectricalLoadHeatThermalLoad
 import net.minecraft.util.Vec3
 import java.io.DataOutputStream
@@ -33,7 +34,7 @@ class GridTransformerElement(node: TransparentNode, descriptor: TransparentNodeD
     internal val primaryVoltage = 120_000.0
     internal val secondaryVoltage = primaryVoltage / 4
 
-    internal val explosion = WorldExplosion(this).machineExplosion()
+    internal val explosion = WorldExplosionTransformatorFailure(this).machineExplosion()
 
     internal var voltagePrimaryWatchdog = VoltageStateWatchDog().apply {
         setUNominal(primaryVoltage)

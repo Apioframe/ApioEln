@@ -59,6 +59,16 @@ public class WorldExplosion implements IDestructable {
     }
 
     @Override
+    public void failureTick() {
+        // we do nothing here
+    }
+
+    @Override
+    public void failureCancel() {
+        // we do nothing here either
+    }
+
+    @Override
     public String describe() {
         return String.format("%s (%s)", this.type, this.c.toString());
     }

@@ -21,6 +21,7 @@ public class ThermalLoadWatchDog extends ValueWatchdog {
     public ThermalLoadWatchDog setTMax(double tMax) {
         this.max = tMax;
         this.min = -40;
+        this.overflowTolerance = tMax * 0.1;
         this.timeoutReset = tMax * 0.1 * 10;
         return this;
     }
@@ -29,6 +30,7 @@ public class ThermalLoadWatchDog extends ValueWatchdog {
         this.max = t.warmLimit;
         this.min = t.coolLimit;
         this.timeoutReset = max * 0.1 * 10;
+        this.overflowTolerance = max * 0.1;
         return this;
     }
 
@@ -36,6 +38,7 @@ public class ThermalLoadWatchDog extends ValueWatchdog {
         this.max = thermalWarmLimit;
         this.min = thermalCoolLimit;
         this.timeoutReset = max * 0.1 * 10;
+        this.overflowTolerance = max * 0.1;
         return this;
     }
 
@@ -43,6 +46,7 @@ public class ThermalLoadWatchDog extends ValueWatchdog {
         this.max = t.warmLimit;
         this.min = t.coolLimit;
         this.timeoutReset = max * 0.1 * 10;
+        this.overflowTolerance = max * 0.1;
         return this;
     }
 }

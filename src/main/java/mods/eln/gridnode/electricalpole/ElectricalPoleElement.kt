@@ -19,6 +19,7 @@ import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
+import mods.eln.sim.process.destruct.WorldExplosionTransformatorFailure
 import mods.eln.sim.process.heater.ElectricalLoadHeatThermalLoad
 
 import java.io.DataOutputStream
@@ -60,7 +61,7 @@ class ElectricalPoleElement(node: TransparentNode, descriptor: TransparentNodeDe
         thermalWatchdog
                 .set(thermalLoad)
                 .setLimit(desc.cableDescriptor.thermalWarmLimit, desc.cableDescriptor.thermalCoolLimit)
-                .set(WorldExplosion(this).cableExplosion())
+                .set(WorldExplosionTransformatorFailure(this).cableExplosion())
 
         slowProcessList.add(voltageWatchdog)
         // Electrical poles can handle higher voltages, due to air insulation.
@@ -82,6 +83,8 @@ class ElectricalPoleElement(node: TransparentNode, descriptor: TransparentNodeDe
             val secondaryVoltageSource = VoltageSource("secondaryVoltageSource", secondaryLoad, null)
             val interSystemProcess = TransformerInterSystemProcess(electricalLoad, secondaryLoad, primaryVoltageSource, secondaryVoltageSource)
             val voltageSecondaryWatchdog = VoltageStateWatchDog()
+
+
 
             trafo = Transformer(
                 secondaryLoad,
